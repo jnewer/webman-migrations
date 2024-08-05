@@ -21,7 +21,7 @@ class Init extends Command
 			->setHelp('Initialize the project for Eloquent Migrations'.PHP_EOL);
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$path = $this->createPath($input, $output);
 		$this->createConfig($path, $output);
@@ -76,29 +76,29 @@ class Init extends Command
 
 		$output->writeln("<info>created</info> $outputPath");
 	}
-	
+
 	public function createBin(OutputInterface $output)
 	{
 	    $pathBinFile = __DIR__ .'/../../bin/elmigrator';
-	    
+
 	    $contents = file_get_contents($pathBinFile);
-	    
+
 	    if ($contents === false) {
 			throw new RuntimeException('Could not find bin file '. $pathBinFile);
 		}
-		
-		$contents = str_replace("__DIR__ . '/../", "'vendor/hyde1/eloquent-migrations/", $contents); 
-		
+
+		$contents = str_replace("__DIR__ . '/../", "'vendor/hyde1/eloquent-migrations/", $contents);
+
 		$outputPathBinFile = getcwd() . DIRECTORY_SEPARATOR .'migrator';
 		$ret = file_put_contents($outputPathBinFile, $contents);
-		
+
 		if ($ret === false) {
 			throw new RuntimeException(sprintf(
 				'Could not be written binary file to %s',
 				$outputPathBinFile
 			));
 		}
-		
+
 		$output->writeln("<info>Created</info> $outputPathBinFile");
 	}
 }
